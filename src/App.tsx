@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Project, Task, LearningLog, Artifact, TaskStatus, LogFeedback } from './types/pbl';
 import { INITIAL_PROJECTS, INITIAL_TASKS, INITIAL_LOGS, INITIAL_ARTIFACTS } from './data/mockData';
-import { Header } from './components/Header';
+import { Sidebar } from './components/Sidebar';
 import { ProjectCanvas } from './components/ProjectCanvas';
 import { TaskBoard } from './components/TaskBoard';
 import { ReflectionLog } from './components/ReflectionLog';
 import { ArtifactGallery } from './components/ArtifactGallery';
 import { AiAssistantModal } from './components/AiAssistantModal';
 import { NewProjectModal } from './components/NewProjectModal';
+import { Sparkles, Plus, Layers, FolderKanban, MessageSquareHeart, Presentation, Award } from 'lucide-react';
 
 export default function App() {
   // Local state initialized with LocalStorage fallback
@@ -58,6 +59,11 @@ export default function App() {
   }, [artifacts]);
 
   const activeProject = projects.find((p) => p.id === activeProjectId) || projects[0];
+
+  // Counts for active project
+  const projectTasksCount = tasks.filter((t) => t.projectId === activeProject.id).length;
+  const projectLogsCount = logs.filter((l) => l.projectId === activeProject.id).length;
+  const projectArtifactsCount = artifacts.filter((a) => a.projectId === activeProject.id).length;
 
   // Handlers
   const handleUpdateProject = (updated: Project) => {
@@ -158,10 +164,36 @@ export default function App() {
     setIsAiModalOpen(true);
   };
 
+  // Section details map
+  const sectionMeta = {
+    canvas: {
+      title: 'Không Gian Dự Án (Canvas)',
+      subtitle: 'Xây dựng mục tiêu, Driving Question & Đánh giá 7 tiêu chuẩn BIE',
+      icon: Layers,
+    },
+    kanban: {
+      title: 'Bảng Nhiệm Vụ (Kanban)',
+      subtitle: 'Theo dõi tiến độ, phân công vai trò & thúc đẩy sự tự chủ Voice & Choice',
+      icon: FolderKanban,
+    },
+    logs: {
+      title: 'Nhật Ký & Phản Hồi 4C',
+      subtitle: 'Ghi chép tiến trình, phản tư 4Cs & nhận góp ý từ giáo viên / chuyên gia',
+      icon: MessageSquareHeart,
+    },
+    gallery: {
+      title: 'Kho Sản Phẩm Triển Lãm',
+      subtitle: 'Lưu trữ & Công khai sản phẩm học tập (Public Product) chuẩn BIE Works',
+      icon: Presentation,
+    },
+  }[activeTab];
+
+  const SectionIcon = sectionMeta.icon;
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white pb-12">
-      {/* App Header */}
-      <Header
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white flex flex-col lg:flex-row">
+      {/* Left Sidebar Menu */}
+      <Sidebar
         projects={projects}
         activeProjectId={activeProjectId}
         onSelectProject={(id) => setActiveProjectId(id)}
@@ -169,51 +201,92 @@ export default function App() {
         onChangeTab={(tab) => setActiveTab(tab)}
         onOpenNewProject={() => setIsNewProjectModalOpen(true)}
         onOpenAiAssistant={() => handleOpenAiAssistant('generate_driving_question')}
+        taskCount={projectTasksCount}
+        logCount={projectLogsCount}
+        artifactCount={projectArtifactsCount}
       />
 
-      {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        {activeTab === 'canvas' && (
-          <ProjectCanvas
-            project={activeProject}
-            onUpdateProject={handleUpdateProject}
-            onOpenAiAssistant={handleOpenAiAssistant}
-          />
-        )}
+      {/* Main Content Viewport */}
+      <div className="flex-1 min-w-0 flex flex-col min-h-screen">
+        {/* Top Header Bar inside Main Viewport */}
+        <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 shrink-0">
+              <SectionIcon className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight leading-none">
+                {sectionMeta.title}
+              </h1>
+              <p className="text-xs text-slate-500 font-medium hidden sm:block mt-0.5">
+                {sectionMeta.subtitle}
+              </p>
+            </div>
+          </div>
 
-        {activeTab === 'kanban' && (
-          <TaskBoard
-            projectId={activeProject.id}
-            tasks={tasks}
-            members={activeProject.members}
-            onAddTask={handleAddTask}
-            onUpdateTaskStatus={handleUpdateTaskStatus}
-            onOpenAiAssistant={handleOpenAiAssistant}
-          />
-        )}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsNewProjectModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold border border-slate-200 transition shadow-2xs"
+            >
+              <Plus className="w-3.5 h-3.5 text-indigo-600" />
+              <span className="hidden sm:inline">Dự án mới</span>
+            </button>
 
-        {activeTab === 'logs' && (
-          <ReflectionLog
-            projectId={activeProject.id}
-            projectTitle={activeProject.title}
-            logs={logs}
-            members={activeProject.members}
-            onAddLog={handleAddLog}
-            onAddFeedback={handleAddFeedback}
-            onOpenAiAssistant={handleOpenAiAssistant}
-          />
-        )}
+            <button
+              onClick={() => handleOpenAiAssistant('generate_driving_question')}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-2xs"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>Trợ lý AI</span>
+            </button>
+          </div>
+        </header>
 
-        {activeTab === 'gallery' && (
-          <ArtifactGallery
-            projectId={activeProject.id}
-            artifacts={artifacts}
-            onAddArtifact={handleAddArtifact}
-            onLikeArtifact={handleLikeArtifact}
-            onAddComment={handleAddArtifactComment}
-          />
-        )}
-      </main>
+        {/* Main Content Container */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          {activeTab === 'canvas' && (
+            <ProjectCanvas
+              project={activeProject}
+              onUpdateProject={handleUpdateProject}
+              onOpenAiAssistant={handleOpenAiAssistant}
+            />
+          )}
+
+          {activeTab === 'kanban' && (
+            <TaskBoard
+              projectId={activeProject.id}
+              tasks={tasks}
+              members={activeProject.members}
+              onAddTask={handleAddTask}
+              onUpdateTaskStatus={handleUpdateTaskStatus}
+              onOpenAiAssistant={handleOpenAiAssistant}
+            />
+          )}
+
+          {activeTab === 'logs' && (
+            <ReflectionLog
+              projectId={activeProject.id}
+              projectTitle={activeProject.title}
+              logs={logs}
+              members={activeProject.members}
+              onAddLog={handleAddLog}
+              onAddFeedback={handleAddFeedback}
+              onOpenAiAssistant={handleOpenAiAssistant}
+            />
+          )}
+
+          {activeTab === 'gallery' && (
+            <ArtifactGallery
+              projectId={activeProject.id}
+              artifacts={artifacts}
+              onAddArtifact={handleAddArtifact}
+              onLikeArtifact={handleLikeArtifact}
+              onAddComment={handleAddArtifactComment}
+            />
+          )}
+        </main>
+      </div>
 
       {/* Modals */}
       <AiAssistantModal
@@ -233,3 +306,4 @@ export default function App() {
     </div>
   );
 }
+
