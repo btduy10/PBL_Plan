@@ -92,7 +92,10 @@ export const ReflectionLog: React.FC<ReflectionLogProps> = ({
     try {
       const res = await fetch('/api/gemini/pbl-assistant', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': localStorage.getItem('gemini_api_key') || '',
+        },
         body: JSON.stringify({
           action: 'review_learning_log',
           payload: {

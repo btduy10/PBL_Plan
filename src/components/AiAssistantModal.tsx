@@ -19,6 +19,7 @@ interface AiAssistantModalProps {
   onUpdateProject: (updatedProject: Project) => void;
   onAddTasks: (newTasks: Omit<Task, 'id'>[]) => void;
   initialAction?: string;
+  onOpenApiKeyModal?: () => void;
 }
 
 export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
@@ -28,6 +29,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   onUpdateProject,
   onAddTasks,
   initialAction = 'generate_driving_question',
+  onOpenApiKeyModal,
 }) => {
   const [activeTab, setActiveTab] = useState<string>(initialAction);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,13 +49,18 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
   if (!isOpen) return null;
 
+  const getHeaders = () => ({
+    'Content-Type': 'application/json',
+    'x-api-key': localStorage.getItem('gemini_api_key') || '',
+  });
+
   const handleGenerateQuestions = async () => {
     setIsLoading(true);
     setErrorMsg(null);
     try {
       const res = await fetch('/api/gemini/pbl-assistant', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders(),
         body: JSON.stringify({
           action: 'generate_driving_question',
           payload: {
@@ -83,7 +90,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     try {
       const res = await fetch('/api/gemini/pbl-assistant', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders(),
         body: JSON.stringify({
           action: 'generate_rubric',
           payload: {
@@ -112,7 +119,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     try {
       const res = await fetch('/api/gemini/pbl-assistant', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders(),
         body: JSON.stringify({
           action: 'suggest_tasks',
           payload: {
@@ -248,8 +255,16 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
         {/* Error Alert if any */}
         {errorMsg && (
-          <div className="m-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold">
-            ⚠️ {errorMsg}
+          <div className="m-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span>⚠️ {errorMsg}</span>
+            {onOpenApiKeyModal && (
+              <button
+                onClick={onOpenApiKeyModal}
+                className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shrink-0 transition"
+              >
+                Cấu Hình API Key Ngay
+              </button>
+            )}
           </div>
         )}
 

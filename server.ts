@@ -12,10 +12,10 @@ const PORT = 3000;
 app.use(express.json());
 
 // Lazy GoogleGenAI instance helper
-function getGeminiAi() {
-  const apiKey = process.env.GEMINI_API_KEY;
+function getGeminiAi(customApiKey?: string) {
+  const apiKey = customApiKey || process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is missing from environment variables.");
+    throw new Error("Chưa có Gemini API Key. Vui lòng bấm vào nút 'API Key' ở góc trên màn hình để cấu hình API Key.");
   }
   return new GoogleGenAI({
     apiKey,
@@ -35,15 +35,17 @@ app.get("/api/health", (req, res) => {
 // PBL AI Co-Pilot Endpoint
 app.post("/api/gemini/pbl-assistant", async (req, res) => {
   try {
-    const { action, payload } = req.body;
+    const { action, payload, apiKey: bodyKey } = req.body;
+    const headerKey = req.headers["x-api-key"] as string | undefined;
+    const effectiveKey = (headerKey && headerKey.trim()) || (bodyKey && bodyKey.trim()) || process.env.GEMINI_API_KEY;
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!effectiveKey) {
       return res.status(400).json({
-        error: "GEMINI_API_KEY chưa được cấu hình trong Cài đặt > Bí mật (Secrets).",
+        error: "Chưa cấu hình Gemini API Key. Vui lòng nhấp vào nút 'API Key' ở thanh công cụ phía trên màn hình để nhập API Key của bạn.",
       });
     }
 
-    const ai = getGeminiAi();
+    const ai = getGeminiAi(effectiveKey);
     let prompt = "";
 
     if (action === "generate_driving_question") {

@@ -9,7 +9,8 @@ import { ArtifactGallery } from './components/ArtifactGallery';
 import { AiAssistantModal } from './components/AiAssistantModal';
 import { NewProjectModal } from './components/NewProjectModal';
 import { DataManagementModal } from './components/DataManagementModal';
-import { Sparkles, Plus, Layers, FolderKanban, MessageSquareHeart, Presentation, Database, HardDrive } from 'lucide-react';
+import { ApiKeyModal } from './components/ApiKeyModal';
+import { Sparkles, Plus, Layers, FolderKanban, MessageSquareHeart, Presentation, Database, HardDrive, Key } from 'lucide-react';
 
 export default function App() {
   // Local state initialized with LocalStorage fallback
@@ -42,6 +43,8 @@ export default function App() {
   const [aiModalAction, setAiModalAction] = useState('generate_driving_question');
   const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
   const [isDataModalOpen, setIsDataModalOpen] = useState(false);
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(() => !!localStorage.getItem('gemini_api_key'));
 
   // Sync state to localStorage on changes
   useEffect(() => {
@@ -261,7 +264,21 @@ export default function App() {
               title="Quản lý dữ liệu lưu trữ máy (localStorage)"
             >
               <HardDrive className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="hidden sm:inline">Lưu trữ máy (localStorage)</span>
+              <span className="hidden sm:inline">Lưu trữ máy</span>
+            </button>
+
+            <button
+              onClick={() => setIsApiKeyModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-800 text-xs font-bold border border-slate-200 transition shadow-2xs relative"
+              title="Cấu hình Google Gemini API Key cho Trợ lý AI"
+            >
+              <Key className="w-3.5 h-3.5 text-amber-600" />
+              <span className="hidden sm:inline">API Key</span>
+              {hasApiKey ? (
+                <span className="w-2 h-2 rounded-full bg-emerald-500" title="API Key đã sẵn sàng" />
+              ) : (
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" title="Chưa nhập API Key" />
+              )}
             </button>
 
             <button
@@ -335,6 +352,16 @@ export default function App() {
         onUpdateProject={handleUpdateProject}
         onAddTasks={handleAddTasks}
         initialAction={aiModalAction}
+        onOpenApiKeyModal={() => {
+          setIsAiModalOpen(false);
+          setIsApiKeyModalOpen(true);
+        }}
+      />
+
+      <ApiKeyModal
+        isOpen={isApiKeyModalOpen}
+        onClose={() => setIsApiKeyModalOpen(false)}
+        onKeySaved={() => setHasApiKey(!!localStorage.getItem('gemini_api_key'))}
       />
 
       <NewProjectModal
