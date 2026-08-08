@@ -13,7 +13,9 @@ import {
   Award, 
   Menu, 
   X,
-  BookOpen
+  BookOpen,
+  Database,
+  HardDrive
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -24,6 +26,7 @@ interface SidebarProps {
   onChangeTab: (tab: 'canvas' | 'kanban' | 'logs' | 'gallery') => void;
   onOpenNewProject: () => void;
   onOpenAiAssistant: () => void;
+  onOpenDataManagement?: () => void;
   taskCount?: number;
   logCount?: number;
   artifactCount?: number;
@@ -37,6 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onChangeTab,
   onOpenNewProject,
   onOpenAiAssistant,
+  onOpenDataManagement,
   taskCount = 0,
   logCount = 0,
   artifactCount = 0,
@@ -204,6 +208,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>Kích Hoạt Trợ Lý AI</span>
         </button>
+      </div>
+
+      {/* LocalStorage Data Storage Badge */}
+      <div className="p-3 mx-3 mb-2 rounded-xl bg-slate-50 border border-slate-200/80 text-xs shrink-0 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <HardDrive className="w-4 h-4 text-emerald-600" />
+            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
+          </div>
+          <div>
+            <div className="text-[11px] font-bold text-slate-800 leading-none">
+              Lưu trên máy (localStorage)
+            </div>
+            <div className="text-[9px] text-slate-500 mt-0.5">
+              Đồng bộ tự động cục bộ
+            </div>
+          </div>
+        </div>
+        {onOpenDataManagement && (
+          <button
+            onClick={onOpenDataManagement}
+            className="px-2 py-1 bg-white hover:bg-slate-100 text-blue-700 border border-blue-200 rounded-lg text-[10px] font-extrabold transition shadow-2xs"
+            title="Quản lý dữ liệu (Sao lưu & Khôi phục)"
+          >
+            Quản lý
+          </button>
+        )}
       </div>
 
       {/* Footer Info */}

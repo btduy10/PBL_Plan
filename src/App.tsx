@@ -8,7 +8,8 @@ import { ReflectionLog } from './components/ReflectionLog';
 import { ArtifactGallery } from './components/ArtifactGallery';
 import { AiAssistantModal } from './components/AiAssistantModal';
 import { NewProjectModal } from './components/NewProjectModal';
-import { Sparkles, Plus, Layers, FolderKanban, MessageSquareHeart, Presentation, Award } from 'lucide-react';
+import { DataManagementModal } from './components/DataManagementModal';
+import { Sparkles, Plus, Layers, FolderKanban, MessageSquareHeart, Presentation, Database, HardDrive } from 'lucide-react';
 
 export default function App() {
   // Local state initialized with LocalStorage fallback
@@ -40,6 +41,7 @@ export default function App() {
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [aiModalAction, setAiModalAction] = useState('generate_driving_question');
   const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
+  const [isDataModalOpen, setIsDataModalOpen] = useState(false);
 
   // Sync state to localStorage on changes
   useEffect(() => {
@@ -73,6 +75,33 @@ export default function App() {
   const handleCreateProject = (newProject: Project) => {
     setProjects([newProject, ...projects]);
     setActiveProjectId(newProject.id);
+  };
+
+  const handleImportData = (imported: {
+    projects: Project[];
+    tasks: Task[];
+    logs: LearningLog[];
+    artifacts: Artifact[];
+  }) => {
+    setProjects(imported.projects);
+    setTasks(imported.tasks);
+    setLogs(imported.logs);
+    setArtifacts(imported.artifacts);
+    if (imported.projects.length > 0) {
+      setActiveProjectId(imported.projects[0].id);
+    }
+  };
+
+  const handleResetData = () => {
+    localStorage.removeItem('pbl_projects');
+    localStorage.removeItem('pbl_tasks');
+    localStorage.removeItem('pbl_logs');
+    localStorage.removeItem('pbl_artifacts');
+    setProjects(INITIAL_PROJECTS);
+    setTasks(INITIAL_TASKS);
+    setLogs(INITIAL_LOGS);
+    setArtifacts(INITIAL_ARTIFACTS);
+    setActiveProjectId(INITIAL_PROJECTS[0].id);
   };
 
   const handleAddTask = (newTaskData: Omit<Task, 'id'>) => {
@@ -201,6 +230,7 @@ export default function App() {
         onChangeTab={(tab) => setActiveTab(tab)}
         onOpenNewProject={() => setIsNewProjectModalOpen(true)}
         onOpenAiAssistant={() => handleOpenAiAssistant('generate_driving_question')}
+        onOpenDataManagement={() => setIsDataModalOpen(true)}
         taskCount={projectTasksCount}
         logCount={projectLogsCount}
         artifactCount={projectArtifactsCount}
@@ -225,6 +255,15 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsDataModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-xs font-bold border border-slate-200 transition shadow-2xs"
+              title="Quản lý dữ liệu lưu trữ máy (localStorage)"
+            >
+              <HardDrive className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="hidden sm:inline">Lưu trữ máy (localStorage)</span>
+            </button>
+
             <button
               onClick={() => setIsNewProjectModalOpen(true)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold border border-slate-200 transition shadow-2xs"
@@ -302,6 +341,17 @@ export default function App() {
         isOpen={isNewProjectModalOpen}
         onClose={() => setIsNewProjectModalOpen(false)}
         onCreateProject={handleCreateProject}
+      />
+
+      <DataManagementModal
+        isOpen={isDataModalOpen}
+        onClose={() => setIsDataModalOpen(false)}
+        projects={projects}
+        tasks={tasks}
+        logs={logs}
+        artifacts={artifacts}
+        onImportData={handleImportData}
+        onResetData={handleResetData}
       />
     </div>
   );
