@@ -9,12 +9,11 @@ import {
   Presentation, 
   Sparkles, 
   Plus, 
-  ChevronDown, 
+  ChevronDown,
   Award, 
   Menu, 
   X,
-  BookOpen,
-  CheckCircle2
+  BookOpen
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -76,10 +75,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-slate-900 text-slate-200 border-r border-slate-800 select-none">
+    <div className="flex flex-col h-full bg-slate-900 text-slate-200 border-r border-slate-800 select-none overflow-y-auto">
       {/* Brand Header */}
-      <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="p-4 border-b border-slate-800/80 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2.5">
           <div className="h-9 w-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg shadow-sm">
             P
           </div>
@@ -104,13 +103,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </div>
 
-      {/* Project Switcher Box */}
-      <div className="p-4 border-b border-slate-800/80 bg-slate-950/40">
-        <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">
-          <span>Dự án đang chọn</span>
+      {/* Project Switcher Section */}
+      <div className="p-4 border-b border-slate-800/80 bg-slate-950/40 shrink-0">
+        <div className="flex items-center justify-between text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
+          <span>Dự Án Đang Chọn</span>
           <button
             onClick={onOpenNewProject}
-            className="text-indigo-400 hover:text-indigo-300 flex items-center gap-1 text-[11px] normal-case font-bold transition"
+            className="text-indigo-400 hover:text-indigo-300 flex items-center gap-1 text-[11px] normal-case font-bold transition hover:underline"
             title="Tạo dự án mới"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -134,22 +133,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {activeProject && (
-          <div className="mt-2.5 p-2.5 rounded-lg bg-slate-800/50 border border-slate-700/50 text-[11px]">
-            <div className="flex items-center justify-between text-slate-300 font-semibold mb-1">
-              <span className="text-indigo-300 font-bold">{activeProject.subject}</span>
-              <span className="text-slate-400">{activeProject.gradeLevel}</span>
+          <div className="mt-2.5 p-2 rounded-lg bg-slate-800/50 border border-slate-700/40 text-[11px]">
+            <div className="flex items-center justify-between text-slate-300 font-semibold">
+              <span className="text-indigo-300 font-bold truncate">{activeProject.subject}</span>
+              <span className="text-slate-400 shrink-0 ml-1">{activeProject.gradeLevel}</span>
             </div>
-            <p className="text-slate-400 text-[10px] line-clamp-2 italic">
-              "{activeProject.drivingQuestion}"
-            </p>
           </div>
         )}
       </div>
 
-      {/* Navigation Links */}
-      <div className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
-        <div className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
-          Điều hướng dự án
+      {/* Navigation Links - Fully Prominent */}
+      <div className="p-3 space-y-1.5 flex-1">
+        <div className="px-2 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
+          Điều Hướng Dự Án
         </div>
 
         {navItems.map((item) => {
@@ -162,17 +158,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onChangeTab(item.id);
                 setIsMobileOpen(false);
               }}
-              className={`w-full flex items-center justify-between p-2.5 rounded-xl text-xs font-bold transition group ${
+              className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition group ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'
+                  ? 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50'
+                  : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
               }`}
             >
               <div className="flex items-center gap-3">
-                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-indigo-400'}`} />
+                <div className={`p-1.5 rounded-lg ${isActive ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-400 group-hover:text-indigo-400'}`}>
+                  <Icon className="w-4 h-4" />
+                </div>
                 <div className="text-left">
-                  <div className="leading-tight">{item.label}</div>
-                  <div className={`text-[10px] font-normal ${isActive ? 'text-indigo-200' : 'text-slate-500'}`}>
+                  <div className="leading-tight text-xs font-extrabold">{item.label}</div>
+                  <div className={`text-[10px] font-normal mt-0.5 ${isActive ? 'text-indigo-200' : 'text-slate-400'}`}>
                     {item.description}
                   </div>
                 </div>
@@ -180,7 +178,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
               {item.badge !== undefined && (
                 <span className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-bold ${
-                  isActive ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-400 border border-slate-700'
+                  isActive ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-300 border border-slate-700'
                 }`}>
                   {item.badge}
                 </span>
@@ -191,13 +189,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* AI Assistant Quick Trigger */}
-      <div className="p-3 m-3 rounded-2xl bg-gradient-to-b from-slate-800/80 to-slate-800 border border-slate-700/80 text-xs">
+      <div className="p-3 m-3 rounded-2xl bg-gradient-to-b from-slate-800/90 to-slate-800 border border-slate-700/80 text-xs shrink-0">
         <div className="flex items-center gap-2 text-indigo-300 font-bold mb-1">
           <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
           <span>Trợ Lý AI PBL</span>
         </div>
-        <p className="text-[11px] text-slate-400 mb-2.5 leading-relaxed">
-          Tạo Driving Question, ma trận Rubric 4C & phân công công việc tự động.
+        <p className="text-[10px] text-slate-400 mb-2 leading-relaxed">
+          Tự động gợi ý Driving Question, Rubric 4C & Thẻ Kanban.
         </p>
         <button
           onClick={onOpenAiAssistant}
@@ -209,8 +207,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer Info */}
-      <div className="p-4 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
-        <span className="flex items-center gap-1">
+      <div className="px-4 py-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between shrink-0">
+        <span className="flex items-center gap-1 text-[10px]">
           <BookOpen className="w-3.5 h-3.5 text-slate-400" /> PBL Works BIE
         </span>
         <span className="font-mono text-[10px] text-slate-400">v2.0</span>
