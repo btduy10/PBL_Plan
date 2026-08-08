@@ -78,17 +78,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const sidebarContent = (
     <div className="flex flex-col h-full bg-white text-slate-800 border-r border-slate-200 select-none overflow-y-auto">
       {/* Brand Header */}
-      <div className="p-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-blue-600 text-white">
-        <div>
-          <h1 className="text-lg font-black text-white tracking-tight leading-none">
-            AI - PROJECT
-          </h1>
-        </div>
+      <div className="p-4 border-b border-slate-100 flex items-center justify-center relative shrink-0 bg-blue-600 text-white text-center">
+        <h1 className="text-lg font-black text-white tracking-tight leading-none text-center">
+          AI - PROJECT
+        </h1>
 
         {/* Mobile close button */}
         <button
           onClick={() => setIsMobileOpen(false)}
-          className="lg:hidden text-blue-100 hover:text-white p-1 rounded-lg"
+          className="lg:hidden text-blue-100 hover:text-white p-1 rounded-lg absolute right-3"
         >
           <X className="w-5 h-5" />
         </button>
@@ -211,15 +209,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <>
       {/* Mobile Top Header Bar */}
       <div className="lg:hidden sticky top-0 z-30 bg-blue-600 border-b border-blue-700 px-4 py-3 flex items-center justify-between text-white">
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={() => setIsMobileOpen(true)}
-            className="p-1.5 rounded-lg bg-blue-700 text-blue-100 hover:text-white"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <span className="font-black text-base tracking-tight text-white">AI - PROJECT</span>
-        </div>
+        <button
+          onClick={() => setIsMobileOpen(true)}
+          className="p-1.5 rounded-lg bg-blue-700 text-blue-100 hover:text-white"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <span className="font-black text-base tracking-tight text-white text-center flex-1 mx-2">
+          AI - PROJECT
+        </span>
 
         <button
           onClick={onOpenAiAssistant}
