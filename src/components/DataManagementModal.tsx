@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Database, Download, Upload, RefreshCw, X, HardDrive, CheckCircle2 } from 'lucide-react';
+import React, { useRef, useState, useEffect } from 'react';
+import { Database, Download, Upload, RefreshCw, X, HardDrive, CheckCircle2, Folder, FolderOpen, Settings, AlertCircle } from 'lucide-react';
 import { Project, Task, LearningLog, Artifact } from '../types/pbl';
 
 interface DataManagementModalProps {
@@ -29,19 +29,36 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
   onResetData,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [folderName, setFolderName] = useState<string>(() => {
+    return localStorage.getItem('pbl_custom_folder_name') || 'Mặc định (Trình duyệt localStorage)';
+  });
+  const [isFileSystemSupported, setIsFileSystemSupported] = useState<boolean>(false);
+  const [directoryHandle, setDirectoryHandle] = useState<FileSystemDirectoryHandle | null>(null);
+  const [autoSyncToFile, setAutoSyncToFile] = useState<boolean>(() => {
+    return localStorage.getItem('pbl_auto_sync_file') === 'true';
+  });
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'showDirectoryPicker' in window) {
+      setIsFileSystemSupported(true);
+    }
+  }, []);
 
   if (!isOpen) return null;
 
-  const handleExport = () => {
-    const data = {
-      version: '2.0',
-      exportedAt: new Date().toISOString(),
-      projects,
-      tasks,
-      logs,
-      artifacts,
-    };
+  // Save JSON helper
+  const getFullDataJson = () => ({
+    version: '2.0',
+    exportedAt: new Date().toISOString(),
+    projects,
+    tasks,
+    logs,
+    artifacts,
+  });
 
+  const handleExport = () => {
+    const data = getFullDataJson();
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -49,6 +66,48 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
     a.download = `pbl-architect-backup-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handlePickDirectory = async () => {
+    if (!('showDirectoryPicker' in window)) {
+      alert('Trình duyệt hiện tại không hỗ trợ chọn thư mục trực tiếp (File System Access API). Vẫn tự động lưu trong localStorage.');
+      return;
+    }
+
+    try {
+      // @ts-ignore - showDirectoryPicker exists on modern desktop browsers
+      const handle: FileSystemDirectoryHandle = await window.showDirectoryPicker({
+        mode: 'readwrite',
+      });
+      setDirectoryHandle(handle);
+      const name = handle.name;
+      setFolderName(`Thư mục chọn: ${name}`);
+      localStorage.setItem('pbl_custom_folder_name', `Thư mục chọn: ${name}`);
+      localStorage.setItem('pbl_auto_sync_file', 'true');
+      setAutoSyncToFile(true);
+
+      // Write initial backup file into the directory
+      const fileHandle = await handle.getFileHandle('pbl-architect-data.json', { create: true });
+      // @ts-ignore
+      const writable = await fileHandle.createWritable();
+      await writable.write(JSON.stringify(getFullDataJson(), null, 2));
+      await writable.close();
+
+      setStatusMessage(`Đã kết nối thành công với thư mục "${name}"! File 'pbl-architect-data.json' đã được khởi tạo.`);
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        alert('Không thể mở thư mục: ' + (err as Error).message);
+      }
+    }
+  };
+
+  const handleResetStoragePath = () => {
+    setDirectoryHandle(null);
+    setFolderName('Mặc định (Trình duyệt localStorage)');
+    localStorage.removeItem('pbl_custom_folder_name');
+    localStorage.setItem('pbl_auto_sync_file', 'false');
+    setAutoSyncToFile(false);
+    setStatusMessage('Đã chuyển về vị trí lưu mặc định (localStorage trình duyệt).');
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,10 +148,10 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
             </div>
             <div>
               <h3 className="font-bold text-base text-slate-900">
-                Quản Lý Dữ Liệu Trình Duyệt (localStorage)
+                Cấu Hình Vị Trí Lưu Dữ Liệu
               </h3>
               <p className="text-xs text-slate-500">
-                Dữ liệu được lưu trực tiếp trên máy của bạn
+                Lưu mặc định hoặc tự chọn ổ đĩa / thư mục trên máy
               </p>
             </div>
           </div>
@@ -104,16 +163,67 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
           </button>
         </div>
 
-        {/* Status Card */}
-        <div className="p-4 rounded-xl bg-blue-50/60 border border-blue-100 flex items-start gap-3">
-          <HardDrive className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-          <div className="space-y-1 text-xs">
-            <div className="flex items-center gap-1.5 font-bold text-blue-900">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span>Đang bật chế độ tự động lưu vào localStorage</span>
+        {/* Directory/Drive Configuration Section */}
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+              <HardDrive className="w-4 h-4 text-blue-600" />
+              <span>Vị Trí Lưu Hiện Tại:</span>
             </div>
-            <p className="text-slate-600 leading-relaxed">
-              Mọi chỉnh sửa của bạn (Dự án, Nhiệm vụ Kanban, Nhật ký học tập, Sản phẩm triển lãm) tự động được đồng bộ và lưu giữ an toàn trên trình duyệt này mà không cần đăng nhập server.
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800 border border-blue-200">
+              {directoryHandle ? 'Ổ đĩa Cục bộ' : 'Mặc định (localStorage)'}
+            </span>
+          </div>
+
+          <div className="p-3 bg-white rounded-lg border border-slate-200 text-xs font-medium text-slate-700 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 truncate">
+              <Folder className="w-4 h-4 text-amber-500 shrink-0" />
+              <span className="font-bold truncate text-slate-900">{folderName}</span>
+            </div>
+            {directoryHandle && (
+              <button
+                onClick={handleResetStoragePath}
+                className="text-[11px] text-rose-600 hover:text-rose-700 font-bold underline shrink-0"
+              >
+                Đặt lại
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center gap-2 pt-1">
+            <button
+              onClick={handlePickDirectory}
+              className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs shadow-2xs transition"
+            >
+              <FolderOpen className="w-4 h-4" />
+              <span>Thay Đổi Ổ Đĩa / Thư Mục Lưu...</span>
+            </button>
+          </div>
+
+          {!isFileSystemSupported && (
+            <p className="text-[11px] text-amber-700 bg-amber-50 p-2.5 rounded-lg border border-amber-200 flex items-center gap-1.5">
+              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+              Trình duyệt này dùng bộ nhớ chuẩn localStorage. Để chọn trực tiếp ổ đĩa C/D/E, vui lòng dùng Google Chrome, Microsoft Edge hoặc Brave trên máy tính.
+            </p>
+          )}
+
+          {statusMessage && (
+            <div className="p-2.5 rounded-lg bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>{statusMessage}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Status Card */}
+        <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-100 flex items-start gap-3">
+          <CheckCircle2 className="w-4.5 h-4.5 text-blue-600 shrink-0 mt-0.5" />
+          <div className="space-y-1 text-xs">
+            <div className="font-bold text-blue-900">
+              Tự động sao lưu và bảo đảm an toàn dữ liệu
+            </div>
+            <p className="text-slate-600 leading-relaxed text-[11px]">
+              Tất cả dự án, nhiệm vụ Kanban, tiêu chuẩn Rubric BIE và sản phẩm đều được bảo toàn. Bạn cũng có thể chủ động Xuất/Nhập file sao lưu dạng JSON dưới đây.
             </p>
           </div>
         </div>
@@ -141,7 +251,7 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
         {/* Action Buttons */}
         <div className="space-y-2.5 pt-2 border-t border-slate-100">
           <h4 className="text-xs font-extrabold text-slate-700 uppercase tracking-wider">
-            Thao Tác Dữ Liệu
+            Sao Lưu & Khôi Phục File
           </h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -151,7 +261,7 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-2xs transition"
             >
               <Download className="w-4 h-4" />
-              <span>Xuất Dữ Liệu (Backup JSON)</span>
+              <span>Tải File Sao Lưu (.JSON)</span>
             </button>
 
             {/* Import JSON */}
@@ -160,7 +270,7 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-xs shadow-2xs transition"
             >
               <Upload className="w-4 h-4 text-blue-600" />
-              <span>Nhập Dữ Liệu (Restore)</span>
+              <span>Khôi Phục Từ File JSON</span>
             </button>
             <input
               type="file"
@@ -172,7 +282,7 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
           </div>
 
           {/* Reset to Default */}
-          <div className="pt-2">
+          <div className="pt-1">
             <button
               onClick={() => {
                 if (confirm('Bạn có chắc chắn muốn đặt lại toàn bộ dữ liệu về mẫu ban đầu? Các thay đổi cục bộ hiện tại sẽ bị ghi đè.')) {
@@ -183,7 +293,7 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
               className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition"
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>Khôi Phục Dữ Liệu Mẫu Ban Đầu</span>
+              <span>Khôi Phục Dữ Liệu Mẫu Mặc Định</span>
             </button>
           </div>
         </div>
@@ -201,3 +311,4 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
     </div>
   );
 };
+
