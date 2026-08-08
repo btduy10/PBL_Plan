@@ -1,0 +1,6 @@
+{
+  "name": "PBL Master - Quản Lý Dự Án Học Tập",
+  "description": "Ứng dụng quản lý dự án học tập theo phương pháp PBL chuẩn BIE với Bảng Kanban, Rubric 4C, Nhật ký phản hồi & AI Co-pilot",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
