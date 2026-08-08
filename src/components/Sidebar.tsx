@@ -9,8 +9,7 @@ import {
   Presentation, 
   Sparkles, 
   Plus, 
-  ChevronDown,
-  Award, 
+  ChevronDown, 
   Menu, 
   X,
   BookOpen
@@ -80,20 +79,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <div className="flex flex-col h-full bg-white text-slate-800 border-r border-slate-200 select-none overflow-y-auto">
       {/* Brand Header */}
       <div className="p-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-blue-600 text-white">
-        <div className="flex items-center gap-2.5">
-          <div className="h-9 w-9 rounded-xl bg-white/20 backdrop-blur-xs flex items-center justify-center text-white font-extrabold text-lg shadow-2xs border border-white/30">
-            P
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <h1 className="text-base font-extrabold text-white tracking-tight leading-none">
-                PBL <span className="text-sky-200">Architect</span>
-              </h1>
-            </div>
-            <span className="text-[10px] text-blue-100 font-semibold flex items-center gap-1 mt-0.5">
-              <Award className="w-3 h-3 text-amber-300" /> BIE Gold Standard
-            </span>
-          </div>
+        <div>
+          <h1 className="text-lg font-black text-white tracking-tight leading-none">
+            AI - PROJECT
+          </h1>
         </div>
 
         {/* Mobile close button */}
@@ -229,12 +218,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <Menu className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-white/20 flex items-center justify-center text-white font-extrabold text-sm border border-white/30">
-              P
-            </div>
-            <span className="font-extrabold text-sm tracking-tight">PBL Architect</span>
-          </div>
+          <span className="font-black text-base tracking-tight text-white">AI - PROJECT</span>
         </div>
 
         <button
