@@ -148,7 +148,7 @@ export const NewProjectModal: React.FC<NewProjectModalProps> = ({
       <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-xl p-6 shadow-2xl text-slate-900 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
-            <FolderPlus className="w-5 h-5 text-indigo-600" />
+            <FolderPlus className="w-5 h-5 text-blue-600" />
             Tạo Dự Án Học Tập PBL Mới
           </h3>
           <button
@@ -262,7 +262,7 @@ export const NewProjectModal: React.FC<NewProjectModalProps> = ({
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition shadow-sm"
+              className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition shadow-2xs"
             >
               Tạo Dự Án
             </button>

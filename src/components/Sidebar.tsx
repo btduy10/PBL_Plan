@@ -75,21 +75,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-slate-900 text-slate-200 border-r border-slate-800 select-none overflow-y-auto">
+    <div className="flex flex-col h-full bg-white text-slate-800 border-r border-slate-200 select-none overflow-y-auto">
       {/* Brand Header */}
-      <div className="p-4 border-b border-slate-800/80 flex items-center justify-between shrink-0">
+      <div className="p-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-blue-600 text-white">
         <div className="flex items-center gap-2.5">
-          <div className="h-9 w-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg shadow-sm">
+          <div className="h-9 w-9 rounded-xl bg-white/20 backdrop-blur-xs flex items-center justify-center text-white font-extrabold text-lg shadow-2xs border border-white/30">
             P
           </div>
           <div>
             <div className="flex items-center gap-1.5">
               <h1 className="text-base font-extrabold text-white tracking-tight leading-none">
-                PBL <span className="text-indigo-400">Architect</span>
+                PBL <span className="text-sky-200">Architect</span>
               </h1>
             </div>
-            <span className="text-[10px] text-slate-400 font-semibold flex items-center gap-1 mt-0.5">
-              <Award className="w-3 h-3 text-amber-400" /> BIE Gold Standard
+            <span className="text-[10px] text-blue-100 font-semibold flex items-center gap-1 mt-0.5">
+              <Award className="w-3 h-3 text-amber-300" /> BIE Gold Standard
             </span>
           </div>
         </div>
@@ -97,19 +97,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Mobile close button */}
         <button
           onClick={() => setIsMobileOpen(false)}
-          className="lg:hidden text-slate-400 hover:text-white p-1 rounded-lg"
+          className="lg:hidden text-blue-100 hover:text-white p-1 rounded-lg"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
       {/* Project Switcher Section */}
-      <div className="p-4 border-b border-slate-800/80 bg-slate-950/40 shrink-0">
-        <div className="flex items-center justify-between text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
+      <div className="p-4 border-b border-slate-100 bg-slate-50/80 shrink-0">
+        <div className="flex items-center justify-between text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2">
           <span>Dự Án Đang Chọn</span>
           <button
             onClick={onOpenNewProject}
-            className="text-indigo-400 hover:text-indigo-300 flex items-center gap-1 text-[11px] normal-case font-bold transition hover:underline"
+            className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-[11px] normal-case font-extrabold transition hover:underline"
             title="Tạo dự án mới"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -121,10 +121,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <select
             value={activeProjectId}
             onChange={(e) => onSelectProject(e.target.value)}
-            className="w-full bg-slate-800/90 hover:bg-slate-800 text-white text-xs font-bold border border-slate-700/80 rounded-xl px-3 py-2.5 pr-8 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer appearance-none transition"
+            className="w-full bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold border border-slate-200 rounded-xl px-3 py-2.5 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer appearance-none transition shadow-2xs"
           >
             {projects.map((proj) => (
-              <option key={proj.id} value={proj.id} className="bg-slate-900 text-white py-1">
+              <option key={proj.id} value={proj.id} className="bg-white text-slate-900 py-1">
                 {proj.title} ({proj.gradeLevel})
               </option>
             ))}
@@ -133,10 +133,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {activeProject && (
-          <div className="mt-2.5 p-2 rounded-lg bg-slate-800/50 border border-slate-700/40 text-[11px]">
-            <div className="flex items-center justify-between text-slate-300 font-semibold">
-              <span className="text-indigo-300 font-bold truncate">{activeProject.subject}</span>
-              <span className="text-slate-400 shrink-0 ml-1">{activeProject.gradeLevel}</span>
+          <div className="mt-2.5 p-2 rounded-lg bg-white border border-slate-200/80 text-[11px] shadow-2xs">
+            <div className="flex items-center justify-between text-slate-700 font-semibold">
+              <span className="text-blue-700 font-bold truncate">{activeProject.subject}</span>
+              <span className="text-slate-500 shrink-0 ml-1 font-medium">{activeProject.gradeLevel}</span>
             </div>
           </div>
         )}
@@ -160,17 +160,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }}
               className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition group ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50'
-                  : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-700 hover:bg-blue-50/80 hover:text-blue-700'
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className={`p-1.5 rounded-lg ${isActive ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-400 group-hover:text-indigo-400'}`}>
+                <div className={`p-1.5 rounded-lg ${isActive ? 'bg-blue-700 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition'}`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="text-left">
                   <div className="leading-tight text-xs font-extrabold">{item.label}</div>
-                  <div className={`text-[10px] font-normal mt-0.5 ${isActive ? 'text-indigo-200' : 'text-slate-400'}`}>
+                  <div className={`text-[10px] font-normal mt-0.5 ${isActive ? 'text-blue-100' : 'text-slate-500'}`}>
                     {item.description}
                   </div>
                 </div>
@@ -178,7 +178,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
               {item.badge !== undefined && (
                 <span className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-bold ${
-                  isActive ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-300 border border-slate-700'
+                  isActive ? 'bg-blue-700 text-white' : 'bg-blue-50 text-blue-700 border border-blue-100'
                 }`}>
                   {item.badge}
                 </span>
@@ -189,17 +189,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* AI Assistant Quick Trigger */}
-      <div className="p-3 m-3 rounded-2xl bg-gradient-to-b from-slate-800/90 to-slate-800 border border-slate-700/80 text-xs shrink-0">
-        <div className="flex items-center gap-2 text-indigo-300 font-bold mb-1">
-          <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+      <div className="p-3.5 m-3 rounded-2xl bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 border border-blue-200/80 text-xs shrink-0 shadow-2xs">
+        <div className="flex items-center gap-2 text-blue-900 font-bold mb-1">
+          <Sparkles className="w-4 h-4 text-amber-500 animate-pulse" />
           <span>Trợ Lý AI PBL</span>
         </div>
-        <p className="text-[10px] text-slate-400 mb-2 leading-relaxed">
+        <p className="text-[10px] text-slate-600 mb-2.5 leading-relaxed">
           Tự động gợi ý Driving Question, Rubric 4C & Thẻ Kanban.
         </p>
         <button
           onClick={onOpenAiAssistant}
-          className="w-full py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition"
+          className="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>Kích Hoạt Trợ Lý AI</span>
@@ -207,9 +207,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer Info */}
-      <div className="px-4 py-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between shrink-0">
+      <div className="px-4 py-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between shrink-0 bg-slate-50/50">
         <span className="flex items-center gap-1 text-[10px]">
-          <BookOpen className="w-3.5 h-3.5 text-slate-400" /> PBL Works BIE
+          <BookOpen className="w-3.5 h-3.5 text-blue-600" /> PBL Works BIE
         </span>
         <span className="font-mono text-[10px] text-slate-400">v2.0</span>
       </div>
@@ -219,16 +219,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       {/* Mobile Top Header Bar */}
-      <div className="lg:hidden sticky top-0 z-30 bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between text-white">
+      <div className="lg:hidden sticky top-0 z-30 bg-blue-600 border-b border-blue-700 px-4 py-3 flex items-center justify-between text-white">
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsMobileOpen(true)}
-            className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white"
+            className="p-1.5 rounded-lg bg-blue-700 text-blue-100 hover:text-white"
           >
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-sm">
+            <div className="h-7 w-7 rounded-lg bg-white/20 flex items-center justify-center text-white font-extrabold text-sm border border-white/30">
               P
             </div>
             <span className="font-extrabold text-sm tracking-tight">PBL Architect</span>
@@ -237,7 +237,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <button
           onClick={onOpenAiAssistant}
-          className="p-2 rounded-lg bg-indigo-600 text-white text-xs font-bold flex items-center gap-1"
+          className="p-2 rounded-lg bg-white/20 text-white text-xs font-bold flex items-center gap-1 border border-white/30"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>AI</span>
@@ -251,7 +251,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Mobile Slide-over Sidebar Drawer */}
       {isMobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex">
+        <div className="lg:hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex">
           <div className="w-72 max-w-[80vw] h-full shadow-2xl">
             {sidebarContent}
           </div>

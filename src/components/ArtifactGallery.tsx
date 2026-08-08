@@ -134,7 +134,7 @@ export const ArtifactGallery: React.FC<ArtifactGalleryProps> = ({
 
           <button
             onClick={() => setIsUploadModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-2xs transition"
           >
             <Plus className="w-4 h-4" />
             <span>Thêm Sản Phẩm Mới</span>
@@ -156,7 +156,7 @@ export const ArtifactGallery: React.FC<ArtifactGalleryProps> = ({
             onClick={() => setSelectedTypeFilter(type.id)}
             className={`px-3.5 py-1.5 rounded-lg transition ${
               selectedTypeFilter === type.id
-                ? 'bg-indigo-600 text-white font-bold shadow-2xs'
+                ? 'bg-blue-600 text-white font-bold shadow-2xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >

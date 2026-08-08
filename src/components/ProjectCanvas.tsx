@@ -63,7 +63,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
       <div className="rounded-2xl bg-white p-6 sm:p-7 border border-slate-200 shadow-2xs text-slate-900 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 text-[11px] font-bold bg-indigo-50 text-indigo-700 rounded-lg border border-indigo-200/80">
+            <span className="px-2.5 py-1 text-[11px] font-bold bg-blue-50 text-blue-700 rounded-lg border border-blue-200">
               PBL BIE Standard
             </span>
             <span className="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 text-slate-700 rounded-lg">
@@ -76,7 +76,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
           
           <button
             onClick={() => onOpenAiAssistant('generate_driving_question')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100/80 text-blue-700 text-xs font-bold border border-blue-200 transition"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>AI gợi ý lại Driving Question</span>
@@ -93,16 +93,16 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
         </div>
 
         {/* Driving Question Card */}
-        <div className="p-4 sm:p-5 rounded-xl bg-indigo-50/50 border border-indigo-100">
+        <div className="p-4 sm:p-5 rounded-xl bg-blue-50/60 border border-blue-100">
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-indigo-100/80 text-indigo-700 shrink-0 mt-0.5">
+            <div className="p-2 rounded-lg bg-blue-100 text-blue-700 shrink-0 mt-0.5">
               <HelpCircle className="w-5 h-5" />
             </div>
             <div className="space-y-1">
-              <span className="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider">
+              <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider">
                 Câu Hỏi Cốt Lõi (Driving Question)
               </span>
-              <p className="text-sm sm:text-lg font-bold text-slate-900 leading-snug italic">
+              <p className="text-sm sm:text-lg font-bold text-blue-950 leading-snug italic">
                 "{project.drivingQuestion}"
               </p>
             </div>
@@ -112,14 +112,14 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
         {/* Progress Bar */}
         <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 font-medium border-t border-slate-100">
           <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 text-indigo-600" />
+            <Calendar className="w-3.5 h-3.5 text-blue-600" />
             <span>Thời gian: {project.startDate} — {project.endDate}</span>
           </div>
           <div className="flex items-center gap-3">
             <span>Tiến độ ({completedMilestones}/{project.milestones.length} mốc)</span>
             <div className="w-28 bg-slate-100 h-2 rounded-full overflow-hidden">
               <div 
-                className="bg-indigo-600 h-full rounded-full transition-all duration-500" 
+                className="bg-blue-600 h-full rounded-full transition-all duration-500" 
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -186,7 +186,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs text-slate-900 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
-              <Users className="w-4 h-4 text-indigo-600" />
+              <Users className="w-4 h-4 text-blue-600" />
               <h3 className="font-bold text-base text-slate-900">
                 Thành Viên Nhóm
               </h3>
@@ -207,7 +207,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
                     <p className="text-xs font-bold text-slate-900 truncate">
                       {member.name}
                     </p>
-                    <span className="text-[10px] font-semibold text-indigo-700">
+                    <span className="text-[10px] font-semibold text-blue-700">
                       {member.roleInGroup}
                     </span>
                   </div>
@@ -219,7 +219,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
           <div className="mt-4 pt-3 border-t border-slate-100 text-center">
             <button
               onClick={() => onOpenAiAssistant('suggest_tasks')}
-              className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 border border-slate-200 flex items-center justify-center gap-1.5 transition"
+              className="w-full py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100/80 text-xs font-bold text-blue-700 border border-blue-200 flex items-center justify-center gap-1.5 transition"
             >
               <Zap className="w-3.5 h-3.5 text-amber-500" />
               <span>Gợi ý phân công AI</span>
@@ -230,10 +230,10 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
       </div>
 
       {/* Milestones & Timeline Phase */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm text-slate-900">
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-2xs text-slate-900">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-200">
+            <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-100">
               <Compass className="w-5 h-5" />
             </div>
             <div>
@@ -260,7 +260,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
                 onClick={() => setActivePhaseFilter(phase.id)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                   activePhaseFilter === phase.id
-                    ? 'bg-indigo-600 text-white shadow-2xs'
+                    ? 'bg-blue-600 text-white shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -277,15 +277,15 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
               className={`p-4 rounded-xl border transition flex items-start gap-3.5 ${
                 ms.completed
                   ? 'bg-slate-50 border-slate-200 opacity-75'
-                  : 'bg-white border-slate-200 hover:border-indigo-300 shadow-2xs'
+                  : 'bg-white border-slate-200 hover:border-blue-300 shadow-2xs'
               }`}
             >
               <button
                 onClick={() => toggleMilestone(ms.id)}
-                className="mt-0.5 text-slate-400 hover:text-indigo-600 transition"
+                className="mt-0.5 text-slate-400 hover:text-blue-600 transition"
               >
                 {ms.completed ? (
-                  <CheckSquare className="w-5 h-5 text-indigo-600" />
+                  <CheckSquare className="w-5 h-5 text-blue-600" />
                 ) : (
                   <Circle className="w-5 h-5 text-slate-300" />
                 )}
@@ -304,7 +304,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
                   {ms.description}
                 </p>
                 <div className="pt-1">
-                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
                     Giai đoạn: {ms.phase === 'launch' ? 'Khởi động' : ms.phase === 'investigation' ? 'Khám phá' : ms.phase === 'creation' ? 'Chế tạo' : 'Triển lãm'}
                   </span>
                 </div>
@@ -315,10 +315,10 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
       </div>
 
       {/* Rubric Matrix 4Cs */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm text-slate-900">
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-2xs text-slate-900">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-200">
+            <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-100">
               <BookOpen className="w-5 h-5" />
             </div>
             <div>
@@ -333,7 +333,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
 
           <button
             onClick={() => onOpenAiAssistant('generate_rubric')}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold border border-indigo-200 transition"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100/80 text-blue-700 text-xs font-bold border border-blue-200 transition"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Tạo Rubric AI mới</span>
@@ -347,14 +347,14 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
                 <th className="p-3.5 w-1/4 uppercase tracking-wider">Kỹ năng / Tiêu chí</th>
                 <th className="p-3.5 w-1/4 text-amber-800 bg-amber-50 uppercase tracking-wider">Cần Cố Gắng (Developing)</th>
                 <th className="p-3.5 w-1/4 text-emerald-800 bg-emerald-50 uppercase tracking-wider">Đạt Chuẩn (Proficient)</th>
-                <th className="p-3.5 w-1/4 text-indigo-800 bg-indigo-50 uppercase tracking-wider">Xuất Sắc (Exemplary)</th>
+                <th className="p-3.5 w-1/4 text-blue-800 bg-blue-50 uppercase tracking-wider">Xuất Sắc (Exemplary)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 bg-white">
               {project.rubrics.map((rubric) => (
                 <tr key={rubric.id} className="hover:bg-slate-50/80 transition">
                   <td className="p-3.5 font-bold text-slate-900 bg-slate-50/60 align-top">
-                    <span className="text-indigo-700 font-extrabold">{rubric.category}</span>
+                    <span className="text-blue-700 font-extrabold">{rubric.category}</span>
                   </td>
                   <td className="p-3.5 text-slate-700 align-top bg-amber-50/30 leading-relaxed">
                     {rubric.developing}
@@ -362,7 +362,7 @@ export const ProjectCanvas: React.FC<ProjectCanvasProps> = ({
                   <td className="p-3.5 text-slate-800 align-top bg-emerald-50/30 leading-relaxed font-medium">
                     {rubric.proficient}
                   </td>
-                  <td className="p-3.5 text-slate-900 align-top bg-indigo-50/30 leading-relaxed font-semibold">
+                  <td className="p-3.5 text-slate-900 align-top bg-blue-50/30 leading-relaxed font-semibold">
                     {rubric.exemplary}
                   </td>
                 </tr>

@@ -132,10 +132,10 @@ export const ReflectionLog: React.FC<ReflectionLogProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* Header Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm text-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-2xs text-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 text-xs font-extrabold uppercase tracking-wider bg-indigo-50 text-indigo-700 rounded-md border border-indigo-200">
+            <span className="px-2.5 py-0.5 text-xs font-extrabold uppercase tracking-wider bg-blue-50 text-blue-700 rounded-md border border-blue-200">
               Formative Assessment & Reflection
             </span>
           </div>
@@ -149,7 +149,7 @@ export const ReflectionLog: React.FC<ReflectionLogProps> = ({
 
         <button
           onClick={() => setIsNewLogModalOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm transition"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-2xs transition"
         >
           <Plus className="w-4 h-4" />
           <span>Viết Nhật Ký Học Tập</span>
@@ -175,8 +175,8 @@ export const ReflectionLog: React.FC<ReflectionLogProps> = ({
               {/* Log Top Author Bar */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-indigo-50 border border-indigo-200 flex items-center justify-center overflow-hidden shadow-2xs">
-                    <span className="font-extrabold text-indigo-700 text-sm">
+                  <div className="h-10 w-10 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center overflow-hidden shadow-2xs">
+                    <span className="font-extrabold text-blue-700 text-sm">
                       {log.studentName.charAt(0)}
                     </span>
                   </div>
@@ -200,7 +200,7 @@ export const ReflectionLog: React.FC<ReflectionLogProps> = ({
                   {log.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-2.5 py-0.5 text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full"
+                      className="px-2.5 py-0.5 text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 rounded-full"
                     >
                       {tag}
                     </span>

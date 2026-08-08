@@ -183,9 +183,9 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl text-slate-900">
         
         {/* Modal Header */}
-        <div className="p-5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-white">
+        <div className="p-5 bg-blue-600 border-b border-blue-700 flex items-center justify-between text-white">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-indigo-600 text-white shadow-sm">
+            <div className="p-2.5 rounded-xl bg-white/20 backdrop-blur-xs text-white border border-white/30 shadow-2xs">
               <Bot className="w-6 h-6 font-bold" />
             </div>
             <div>
@@ -193,7 +193,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 Trợ Lý PBL AI Co-Pilot (Gemini 3.6 Flash)
                 <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
               </h2>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-blue-100">
                 Thiết kế bài giảng, câu hỏi cốt lõi, tiêu chí Rubric & phân công công việc chuẩn BIE
               </p>
             </div>
@@ -201,23 +201,23 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white transition p-1"
+            className="text-blue-100 hover:text-white transition p-1"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Modal Tabs */}
-        <div className="flex items-center space-x-1 px-4 py-2 bg-slate-100 border-b border-slate-200 text-xs font-bold overflow-x-auto">
+        <div className="flex items-center space-x-1 px-4 py-2 bg-slate-50 border-b border-slate-200 text-xs font-bold overflow-x-auto">
           <button
             onClick={() => setActiveTab('generate_driving_question')}
             className={`px-4 py-2 rounded-lg transition whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'generate_driving_question'
-                ? 'bg-white text-indigo-700 border border-slate-300 shadow-2xs font-extrabold'
+                ? 'bg-white text-blue-700 border border-blue-200 shadow-2xs font-extrabold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <HelpCircle className="w-4 h-4 text-indigo-600" />
+            <HelpCircle className="w-4 h-4 text-blue-600" />
             <span>1. Câu Hỏi Cốt Lõi (Driving Question)</span>
           </button>
 

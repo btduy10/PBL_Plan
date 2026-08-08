@@ -191,7 +191,7 @@ export default function App() {
   const SectionIcon = sectionMeta.icon;
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F4F7FA] text-slate-900 font-sans selection:bg-blue-600 selection:text-white flex flex-col lg:flex-row">
       {/* Left Sidebar Menu */}
       <Sidebar
         projects={projects}
@@ -209,9 +209,9 @@ export default function App() {
       {/* Main Content Viewport */}
       <div className="flex-1 min-w-0 flex flex-col min-h-screen">
         {/* Top Header Bar inside Main Viewport */}
-        <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
+        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-blue-100 px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 shrink-0">
+            <div className="p-2 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 shrink-0">
               <SectionIcon className="w-5 h-5" />
             </div>
             <div>
@@ -229,13 +229,13 @@ export default function App() {
               onClick={() => setIsNewProjectModalOpen(true)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold border border-slate-200 transition shadow-2xs"
             >
-              <Plus className="w-3.5 h-3.5 text-indigo-600" />
+              <Plus className="w-3.5 h-3.5 text-blue-600" />
               <span className="hidden sm:inline">Dự án mới</span>
             </button>
 
             <button
               onClick={() => handleOpenAiAssistant('generate_driving_question')}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-2xs"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
               <span>Trợ lý AI</span>

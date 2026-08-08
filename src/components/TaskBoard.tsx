@@ -64,7 +64,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
     {
       status: 'in_progress',
       title: 'Đang Thực Hiện',
-      color: 'text-indigo-700',
+      color: 'text-blue-700',
     },
     {
       status: 'review',
@@ -129,7 +129,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
 
           <button
             onClick={() => setIsNewTaskModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-2xs transition"
           >
             <Plus className="w-4 h-4" />
             <span>Thêm Nhiệm Vụ</span>
@@ -149,7 +149,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
           <select
             value={selectedMemberFilter}
             onChange={(e) => setSelectedMemberFilter(e.target.value)}
-            className="bg-white text-slate-800 font-semibold border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-2xs"
+            className="bg-white text-slate-800 font-semibold border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-2xs"
           >
             <option value="all">Tất cả thành viên</option>
             {members.map((m) => (
@@ -163,7 +163,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({
           <select
             value={selectedSkillFilter}
             onChange={(e) => setSelectedSkillFilter(e.target.value)}
-            className="bg-white text-slate-800 font-semibold border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-2xs"
+            className="bg-white text-slate-800 font-semibold border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-2xs"
           >
             <option value="all">Tất cả Kỹ năng 4Cs</option>
             <option value="Tư duy phản biện">Tư duy phản biện</option>
