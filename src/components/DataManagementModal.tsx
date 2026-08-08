@@ -168,35 +168,42 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
               <HardDrive className="w-4 h-4 text-blue-600" />
-              <span>Vị Trí Lưu Hiện Tại:</span>
+              <span>Vị Trí & Đường Dẫn Lưu Trữ Dữ Liệu:</span>
             </div>
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800 border border-blue-200">
-              {directoryHandle ? 'Ổ đĩa Cục bộ' : 'Mặc định (localStorage)'}
+              {directoryHandle ? 'Ổ đĩa Tự chọn' : 'Đường dẫn Mặc định'}
             </span>
           </div>
 
-          <div className="p-3 bg-white rounded-lg border border-slate-200 text-xs font-medium text-slate-700 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 truncate">
-              <Folder className="w-4 h-4 text-amber-500 shrink-0" />
-              <span className="font-bold truncate text-slate-900">{folderName}</span>
+          <div className="p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium text-slate-700 space-y-1.5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 truncate">
+                <Folder className="w-4 h-4 text-amber-500 shrink-0" />
+                <span className="font-bold truncate text-slate-900">{folderName}</span>
+              </div>
+              {directoryHandle && (
+                <button
+                  onClick={handleResetStoragePath}
+                  className="text-[11px] text-rose-600 hover:text-rose-700 font-bold underline shrink-0"
+                >
+                  Khôi phục mặc định
+                </button>
+              )}
             </div>
-            {directoryHandle && (
-              <button
-                onClick={handleResetStoragePath}
-                className="text-[11px] text-rose-600 hover:text-rose-700 font-bold underline shrink-0"
-              >
-                Đặt lại
-              </button>
+            {!directoryHandle && (
+              <div className="pt-1 text-[11px] text-slate-500 font-mono bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span className="text-slate-400">Đường dẫn mặc định:</span> Browser LocalStorage (IndexedDB / Local Storage)
+              </div>
             )}
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-2 pt-1">
             <button
               onClick={handlePickDirectory}
-              className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs shadow-2xs transition"
+              className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs shadow-2xs transition"
             >
               <FolderOpen className="w-4 h-4" />
-              <span>Thay Đổi Ổ Đĩa / Thư Mục Lưu...</span>
+              <span>Thay Đổi Ổ Đĩa / Thư Mục Lưu Tự Động...</span>
             </button>
           </div>
 
